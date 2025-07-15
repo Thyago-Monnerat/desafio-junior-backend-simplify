@@ -1,0 +1,11 @@
+package org.thyagomonnerat.desafiojunior.mappers;
+
+import org.mapstruct.Mapper;
+import org.thyagomonnerat.desafiojunior.dtos.TaskDto;
+import org.thyagomonnerat.desafiojunior.models.TaskModel;
+
+@Mapper(componentModel = "spring")
+public interface TaskMapper {
+    TaskModel fromDtoToModel(TaskDto dto);
+    TaskDto fromModelToDto(TaskModel model);
+}
