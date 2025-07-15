@@ -1,6 +1,7 @@
 package org.thyagomonnerat.desafiojunior.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.thyagomonnerat.desafiojunior.dtos.TaskDto;
 import org.thyagomonnerat.desafiojunior.models.TaskModel;
 
@@ -8,4 +9,6 @@ import org.thyagomonnerat.desafiojunior.models.TaskModel;
 public interface TaskMapper {
     TaskModel fromDtoToModel(TaskDto dto);
     TaskDto fromModelToDto(TaskModel model);
+
+    void updateModelFromDto(TaskDto dto, @MappingTarget TaskModel model);
 }
