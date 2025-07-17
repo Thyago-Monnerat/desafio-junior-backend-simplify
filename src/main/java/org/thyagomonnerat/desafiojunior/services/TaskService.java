@@ -38,19 +38,17 @@ public class TaskService {
         }
     }
 
-    @Transactional
-    protected TaskModel saveTask(TaskModel model) {
-        log.info("Attempting to create new task");
+    @Transactional(readOnly = true)
+    protected void checkDupeTask(String name, Long id) {
+        log.info("Checking duplicate task names. Name: {}", name);
 
-        try {
-            TaskModel savedTask = this.repository.save(model);
-            log.info("New task was saved successfully");
-
-            return savedTask;
-        } catch (Exception e) {
-            log.error("Couldn't create a new task", e);
-            throw new RuntimeException("Couldn't create a new task", e);
-        }
+        this.repository.findByName(name).ifPresent((task) -> {
+            if(id == null || !id.equals(task.getId())){
+                log.warn("The task with the name {} already exists.", task.getName());
+                throw new TaskAlreadyExistsException("Task name already exists");
+            }
+        });
+        log.info("No tasks with the name: {} was found", name);
     }
 
     @Transactional(readOnly = true)
@@ -61,13 +59,19 @@ public class TaskService {
 
     @Transactional
     public TaskDto addTask(TaskDto dto) {
-        this.repository.findByName(dto.name()).ifPresent((task) -> {
-            log.warn("The task with the name {} already exists.", task.getName());
-            throw new TaskAlreadyExistsException("Task name already exists");
-        });
+        log.info("Attempting to create new task");
 
-        TaskModel savedTask = saveTask(mapper.fromDtoToModel(dto));
-        return mapper.fromModelToDto(savedTask);
+        try {
+            TaskModel model = mapper.fromDtoToModel(dto);
+            checkDupeTask(dto.name(), null);
+            TaskModel savedTask = this.repository.save(model);
+            log.info("New task was saved successfully");
+
+            return mapper.fromModelToDto(savedTask);
+        } catch (Exception e) {
+            log.error("Couldn't create a new task", e);
+            throw new RuntimeException("Couldn't create a new task", e);
+        }
     }
 
     @Transactional
@@ -77,12 +81,12 @@ public class TaskService {
         try {
             TaskModel model = getTask(id);
 
+            checkDupeTask(dto.name(), id);
             mapper.updateModelFromDto(dto, model);
+
             log.info("The task {} was updated successfully", id);
 
-            TaskModel savedTask = saveTask(model);
-
-            return mapper.fromModelToDto(savedTask);
+            return mapper.fromModelToDto(model);
         } catch (Exception e) {
             log.error("Failed to update the task with the id {}", id);
             throw new RuntimeException("Couldn't update the task " + id, e);
