@@ -1,6 +1,7 @@
 package org.thyagomonnerat.desafiojunior.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.thyagomonnerat.desafiojunior.dtos.TaskDto;
@@ -21,11 +22,11 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<TaskDto> addTask(@RequestBody TaskDto dto) {
-        return ResponseEntity.ok(service.addTask(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addTask(dto));
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<TaskDto> getTasksById(@PathVariable long id, @RequestBody TaskDto dto) {
+    public ResponseEntity<TaskDto> updateTask(@PathVariable long id, @RequestBody TaskDto dto) {
         return ResponseEntity.ok(service.updateTask(id, dto));
     }
 
