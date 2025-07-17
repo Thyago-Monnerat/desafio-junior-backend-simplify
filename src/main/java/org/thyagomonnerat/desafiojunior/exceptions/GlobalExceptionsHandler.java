@@ -12,4 +12,9 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<String> handleTaskNotFound(TaskNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(TaskAlreadyExistsException.class)
+    public ResponseEntity<String> handleTaskAlreadyExists(TaskAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
 }
