@@ -1,4 +1,4 @@
 package org.thyagomonnerat.desafiojunior.dtos;
 
-public record TaskDto (int id, String name, String description, boolean done, int priority){
+public record TaskDto (long id, String name, String description, boolean done, int priority){
 }
