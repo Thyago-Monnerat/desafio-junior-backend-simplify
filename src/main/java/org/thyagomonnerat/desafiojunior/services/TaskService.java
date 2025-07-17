@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thyagomonnerat.desafiojunior.dtos.TaskDto;
+import org.thyagomonnerat.desafiojunior.exceptions.TaskAlreadyExistsException;
 import org.thyagomonnerat.desafiojunior.exceptions.TaskNotFoundException;
 import org.thyagomonnerat.desafiojunior.mappers.TaskMapper;
 import org.thyagomonnerat.desafiojunior.models.TaskModel;
@@ -60,8 +61,12 @@ public class TaskService {
 
     @Transactional
     public TaskDto addTask(TaskDto dto) {
-        TaskModel savedTask = saveTask(mapper.fromDtoToModel(dto));
+        this.repository.findByName(dto.name()).ifPresent((task) -> {
+            log.warn("The task with the name {} already exists.", task.getName());
+            throw new TaskAlreadyExistsException("Task name already exists");
+        });
 
+        TaskModel savedTask = saveTask(mapper.fromDtoToModel(dto));
         return mapper.fromModelToDto(savedTask);
     }
 
