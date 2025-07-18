@@ -57,7 +57,6 @@ public class TaskService {
         log.info("Attempting to create new task");
         checkDupeTask(dto.name(), null);
 
-
         TaskModel model = mapper.fromDtoToModel(dto);
         TaskModel savedTask = this.repository.save(model);
         log.info("New task was saved successfully");
@@ -69,9 +68,10 @@ public class TaskService {
     public TaskDto updateTask(long id, TaskDto dto) {
         log.info("Attempting to update the task with the id: {}", id);
 
+        checkDupeTask(dto.name(), id);
+
         TaskModel model = getTask(id);
 
-        checkDupeTask(dto.name(), id);
         mapper.updateModelFromDto(dto, model);
 
         log.info("The task {} was updated successfully", id);
