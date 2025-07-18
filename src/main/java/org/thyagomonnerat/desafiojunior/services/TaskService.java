@@ -13,9 +13,9 @@ import org.thyagomonnerat.desafiojunior.repositories.TaskRepository;
 
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 @Service
-@Slf4j
 public class TaskService {
     private final TaskRepository repository;
     private final TaskMapper mapper;
