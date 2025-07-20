@@ -65,9 +65,7 @@ class DesafiojuniorApplicationTests {
         void shouldThrowExceptionWhenAddingDuplicatedTask() {
             when(repository.findByName(dto.name())).thenReturn(Optional.of(task));
 
-            Assertions.assertThrows(TaskAlreadyExistsException.class, () -> {
-                service.addTask(dto);
-            });
+            Assertions.assertThrows(TaskAlreadyExistsException.class, () -> service.addTask(dto));
 
             verify(repository, never()).save(any());
         }
@@ -98,9 +96,7 @@ class DesafiojuniorApplicationTests {
         void shouldThrowExceptionWhenUpdatingToDuplicatedName() {
             when(repository.findByName(dto.name())).thenReturn(Optional.of(task));
 
-            Assertions.assertThrows(TaskAlreadyExistsException.class, () -> {
-                service.updateTask(2L, dto);
-            });
+            Assertions.assertThrows(TaskAlreadyExistsException.class, () -> service.updateTask(2L, dto));
 
             verify(repository, never()).save(any());
         }
@@ -110,9 +106,7 @@ class DesafiojuniorApplicationTests {
         void shouldThrowExceptionWhenUpdatingToInexistentId() {
             when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(TaskNotFoundException.class, () -> {
-                service.updateTask(1L, dto);
-            });
+            Assertions.assertThrows(TaskNotFoundException.class, () -> service.updateTask(1L, dto));
 
             verify(repository, never()).save(any());
         }
@@ -120,7 +114,7 @@ class DesafiojuniorApplicationTests {
 
     @Nested
     @DisplayName("Delete a task")
-    class whenDeletingTask{
+    class whenDeletingTask {
         @Test
         @DisplayName("Should delete an existent task")
         void shouldDeleteATask() {
@@ -139,9 +133,7 @@ class DesafiojuniorApplicationTests {
         void shouldThrowExceptionWhenDeletingToInexistentId() {
             when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(TaskNotFoundException.class, () -> {
-                service.deleteTask(1L);
-            });
+            Assertions.assertThrows(TaskNotFoundException.class, () -> service.deleteTask(1L));
 
             verify(repository, never()).delete(any());
         }
