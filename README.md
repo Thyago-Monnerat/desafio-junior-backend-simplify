@@ -8,16 +8,17 @@ Aplicação web de To Do List utilizando spring boot + postgres, documentado com
 * PostgresSQL
 * Sl4j
 * OpenAPI (Swagger)
+* Docker
 
 ## Como executar
 Clonar repositório git  
 Construir o projeto:  
 ```
-$ gradle clean build  
+$ docker build -t tagename .
 ```
 Executar a aplicação:  
 ```
-$ java -jar target/desafiojunior-0.0.1-SNAPSHOT.jar
+$ docker run -p 8080:8080 imageId
 ```
 
 Após isso, a UI do openAPI ficará disponível em: localhost:8080/swagger-ui.html
