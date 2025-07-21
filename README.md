@@ -1,20 +1,85 @@
-# Desafio sistema de gerenciamento de tarefas (To-Do List)
-Repositório para ser usado pelos candidatos à vaga de Desenvolvedor Júnior Backend Liferay da Simplify
+# ToDo List para gerenciar tarefas
+Aplicação web de To Do List utilizando spring boot + postgres, documentado com OpenAPI. Feito para um desafio de backend júnior da Simplify
 
-## Descrição
-- Desenvolva uma aplicação web utilizando uma linguagem de programação e um framework de sua escolha. A aplicação deve consistir em um sistema de gerenciamento de tarefas, onde os usuários podem criar, visualizar, editar e excluir tarefas.
+## Tecnologias usadas
+* Spring MVC
+* Spring Web
+* H2
+* PostgresSQL
+* Sl4j
+* OpenAPI (Swagger)
 
-## Requisitos
-- Usar banco de dados
-- Campos mínimos da entidade de tarefa
-    - Nome
-    - Descrição
-    - Realizado
-    - Prioridade
-- Criar CRUD de tarefas
+## Como executar
+Clonar repositório git  
+Construir o projeto:  
+```
+$ gradle clean build  
+```
+Executar a aplicação:  
+```
+$ java -jar target/desafiojunior-0.0.1-SNAPSHOT.jar
+```
 
-## Instruções
-- Fazer um fork do repositório para sua conta pessoal do git
-- Trabalhar utilizando commits
-- Documentar como executar sua aplicação
-- Descrever as funcionalidades do software
+Após isso, a UI do openAPI ficará disponível em: localhost:8080/swagger-ui.html
+
+---
+
+# API Endpoints
+Para fazer as requisições HTTP abaixo, acesse o endpoint /task.
+
+---
+Criar Tarefa - POST  
+localhost:8080/task + body com as informaçãoes a serem alteradas
+```
+[
+    {
+        "descricao": "Desc Todo 1",
+        "id": 1,
+        "nome": "Todo 1",
+        "prioridade": 1,
+        "realizado": false
+    }
+]
+```
+Listar Tarefas - GET  
+localhost:8080/task
+```
+[
+    {
+        "id": 1,
+        "descricao": "Desc Todo 1",
+        "nome": "Todo 1",
+        "prioridade": 1,
+        "realizado": false
+    }
+]
+```
+Atualizar Tarefa - PATCH  
+localhost:8080/task/{id} + body com as informaçãoes a serem alteradas
+```
+[
+    {
+        "descricao": "Desc Todo 1 Up",
+        "id": 1,
+        "nome": "Todo 1 Up",
+        "prioridade": 2,
+        "realizado": false
+    }
+]
+```
+Remover Tarefa  
+localhost:8080/task/{id}
+```
+localhost:8080/task/{id}
+[ 
+    {
+        "descricao": "Desc Todo 1 Up",
+        "id": 1,
+        "nome": "Todo 1 Up",
+        "prioridade": 2,
+        "realizado": false
+    }
+]
+```
+
+
